@@ -8,9 +8,10 @@ terraform {
 }
 
 data "template_file" "user_data" {
+    for_each = var.vm_disk_configs
     template = file("${path.module}/cloud_init.cfg")
     vars = {
-        VM_USER = var.VM_USER
+        VM_USER = each.value.user
     }
 }
 
@@ -19,23 +20,25 @@ data "template_file" "network_config"{
 }
 
 resource "libvirt_pool" "vm" {
-    name = "${var.VM_HOSTNAME}_pool"
+    for_each = var.vm_disk_configs
+    name = "${each.value.name}_pool"
     type = "dir"
     path = "/tmp/terraform-provider-libvirt-pool-ubuntu"
 }
 
 resource "libvirt_volume" "vm" {
-    count = var.VM_COUNT
-    name = "${var.VM_HOSTNAME}-${count.index}_volume.${var.VM_IMG_FORMAT}"
-    pool = libvirt_pool.vm.name
-    source = var.VM_IMG_URL
-    format = var.VM_IMG_FORMAT
+    for_each = var.vm_disk_configs
+    name = "${each.value.name}_volume.${each.value.format}"
+    pool = libvirt_pool.vm[each.key].name
+    source = each.value.source
+    format = each.value.format
 }
 
 
 resource "libvirt_cloudinit_disk" "cloudinit" {
-    name = "${var.VM_HOSTNAME}_cloudinit.iso"
-    user_data = data.template_file.user_data.rendered
+    for_each = var.vm_disk_configs
+    name = "${each.value.name}_cloudinit.iso"
+    user_data = data.template_file.user_data[each.key].rendered
     network_config = data.template_file.network_config.rendered
-    pool = libvirt_pool.vm.name
+    pool = libvirt_pool.vm[each.key].name
 }

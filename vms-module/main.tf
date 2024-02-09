@@ -26,16 +26,16 @@ locals {
 }
 
 resource "libvirt_domain" "vm" {
-    count = var.VM_COUNT
-    name = "${var.VM_HOSTNAME}-${count.index}"
-    memory = var.VM_RAM
-    vcpu = var.VM_CPU
+    for_each = var.vm_vms_configs
+    name = "${each.value.name}"
+    memory = each.value.ram
+    vcpu = each.value.cpu
 
-    cloudinit = data.terraform_remote_state.disk_details.outputs.cloudinit_id  
+    cloudinit = data.terraform_remote_state.disk_details.outputs.cloudinit_id[each.value.index]
 
 
 network_interface {
-    network_name = "${data.terraform_remote_state.network_details.outputs.vm_network_name}"    
+    network_name = "${data.terraform_remote_state.network_details.outputs.vm_network_name[each.key]}"    
 }
 
 console {
@@ -51,7 +51,7 @@ console {
 }
 
 disk {
-    volume_id = "${data.terraform_remote_state.disk_details.outputs.disk_id[count.index]}"
+    volume_id = "${data.terraform_remote_state.disk_details.outputs.disk_id[each.value.index]}"
 }
 
 graphics {
