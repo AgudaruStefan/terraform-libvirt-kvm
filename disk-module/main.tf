@@ -23,7 +23,7 @@ resource "libvirt_pool" "vm" {
     for_each = var.vm_disk_configs
     name = "${each.value.name}_pool"
     type = "dir"
-    path = "/tmp/terraform-provider-libvirt-pool-ubuntu"
+    path = "/tmp/terraform-provider-libvirt-pool-ubuntu-${each.value.name}"
 }
 
 resource "libvirt_volume" "vm" {

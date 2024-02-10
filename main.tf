@@ -15,7 +15,16 @@ provider "libvirt" {
 }
 
 module "disk_module" {
-  source = "./disk-module"
+    for_each = var.vm_main_configs
+    source = "./disk-module"
+    vm_disk_configs = {
+      "${each.key}" = {
+          name     = each.value.name
+          source   = each.value.source
+          user     = each.value.user
+          format   = each.value.format
+      }
+    }
 }
 
 module "network_module" {
@@ -24,7 +33,16 @@ module "network_module" {
 }
 
 module "vms_module" {
+    for_each = var.vm_main_configs
     source = "./vms-module"
     depends_on = [module.network_module]
+    vm_vms_configs = {
+      "${each.key}" = {
+          count   = each.value.count
+          index   = each.value.index
+          name    = each.value.name
+          cpu     = each.value.cpu
+          ram     = each.value.ram
+      }
+    }
 }
-

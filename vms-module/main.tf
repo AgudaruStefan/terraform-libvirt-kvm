@@ -31,11 +31,11 @@ resource "libvirt_domain" "vm" {
     memory = each.value.ram
     vcpu = each.value.cpu
 
-    cloudinit = data.terraform_remote_state.disk_details.outputs.cloudinit_id[each.value.index]
+    cloudinit = data.terraform_remote_state.disk_details.outputs["cloudinit_id"]["${each.key}"][each.value.index]
 
 
 network_interface {
-    network_name = "${data.terraform_remote_state.network_details.outputs.vm_network_name[each.key]}"    
+    network_name = "${data.terraform_remote_state.network_details.outputs.vm_network_name}"    
 }
 
 console {
@@ -51,7 +51,7 @@ console {
 }
 
 disk {
-    volume_id = "${data.terraform_remote_state.disk_details.outputs.disk_id[each.value.index]}"
+    volume_id = "${data.terraform_remote_state.disk_details.outputs["disk_id"]["${each.key}"][each.value.index]}"
 }
 
 graphics {
