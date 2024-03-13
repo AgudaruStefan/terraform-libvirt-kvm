@@ -13,9 +13,9 @@ variable "VM_NETMODE"{
     type = string
 }
 
-variable "VM_DHCP"{
-    default = true
-    type = bool
+variable "VM_DHCP" {
+    default = false
+    type    = bool
 }
 
 variable "VM_DNS"{

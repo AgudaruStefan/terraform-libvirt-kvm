@@ -23,6 +23,7 @@ module "disk_module" {
           source   = each.value.source
           user     = each.value.user
           format   = each.value.format
+          ip       = each.value.ip
       }
     }
 }
@@ -45,4 +46,20 @@ module "vms_module" {
           ram     = each.value.ram
       }
     }
+}
+
+locals {
+  master_hosts = [for key, value in var.vm_main_configs : value.ip if value.is_master]
+  worker_hosts = [for key, value in var.vm_main_configs : value.ip if !value.is_master]
+}
+
+resource "local_file" "ansible_hosts_file" {
+  filename = "${path.module}/ansible_hosts.ini"
+  content = <<-EOT
+[masters]
+${join("\n", local.master_hosts)}
+
+[workers]
+${join("\n", local.worker_hosts)}
+EOT
 }

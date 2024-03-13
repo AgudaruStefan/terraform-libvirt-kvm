@@ -16,7 +16,11 @@ data "template_file" "user_data" {
 }
 
 data "template_file" "network_config"{
+    for_each = var.vm_disk_configs
     template = file("${path.module}/network_config.cfg")
+    vars = {
+        IP = each.value.ip
+    }
 }
 
 resource "libvirt_pool" "vm" {
@@ -39,6 +43,6 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
     for_each = var.vm_disk_configs
     name = "${each.value.name}_cloudinit.iso"
     user_data = data.template_file.user_data[each.key].rendered
-    network_config = data.template_file.network_config.rendered
+    network_config = data.template_file.network_config[each.key].rendered
     pool = libvirt_pool.vm[each.key].name
 }

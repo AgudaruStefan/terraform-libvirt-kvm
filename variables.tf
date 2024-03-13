@@ -8,5 +8,7 @@ variable "vm_main_configs" {
    source   = string
    user     = string
    format   = string
+   ip       = string
+   is_master = bool
   }))
 }

@@ -21,10 +21,6 @@ data "terraform_remote_state" "disk_details" {
   }
 }
 
-locals {
-  cloudinit_parts = split(";", data.terraform_remote_state.disk_details.outputs.cloudinit_id)
-}
-
 resource "libvirt_domain" "vm" {
     for_each = var.vm_vms_configs
     name = "${each.value.name}"
@@ -35,7 +31,7 @@ resource "libvirt_domain" "vm" {
 
 
 network_interface {
-    network_name = "${data.terraform_remote_state.network_details.outputs.vm_network_name}"    
+    network_name = "${data.terraform_remote_state.network_details.outputs.vm_network_name}"  
 }
 
 console {

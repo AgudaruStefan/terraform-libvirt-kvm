@@ -6,14 +6,13 @@ terraform {
     }
 }
 }
-resource "libvirt_network" "vm_public_network"{
+resource "libvirt_network" "vm_public_network" {
     name = "${var.VM_HOSTNAME}_network"
     mode = "${var.VM_NETMODE}"
     domain = "${var.VM_HOSTNAME}.local"
-    addresses = ["${var.VM_CIDR_RANGE}"]
-    dhcp {
-        enabled = var.VM_DHCP
-    }
+
+    addresses = ["192.168.100.0/24"]
+    
     dns {
         enabled = var.VM_DNS
     }

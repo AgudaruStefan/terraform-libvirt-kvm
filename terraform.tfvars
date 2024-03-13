@@ -8,6 +8,8 @@ vm_main_configs={
        source   = "https://cloud-images.ubuntu.com/releases/bionic/release/ubuntu-18.04-server-cloudimg-amd64.img"
         user     = "masternodeuser"
         format   = "qcow2"
+        ip       = "192.168.100.20"
+        is_master = true
     }
     workerNode1 = {
         count   = 1
@@ -16,8 +18,10 @@ vm_main_configs={
         cpu     = 1
         ram     = 2048
        source   = "https://cloud-images.ubuntu.com/releases/bionic/release/ubuntu-18.04-server-cloudimg-amd64.img"
-        user     = "workernodeuser"
+        user     = "workernodeuser1"
         format   = "qcow2"
+        ip       = "192.168.100.30"
+        is_master = false
     }
     workerNode2 = {
         count   = 1
@@ -26,7 +30,9 @@ vm_main_configs={
         cpu     = 1
         ram     = 2048
        source   = "https://cloud-images.ubuntu.com/releases/bionic/release/ubuntu-18.04-server-cloudimg-amd64.img"
-        user     = "workernodeuser"
+        user     = "workernodeuser2"
         format   = "qcow2"
+        ip       = "192.168.100.40"
+        is_master = false
     }
 }
