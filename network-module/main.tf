@@ -11,7 +11,7 @@ resource "libvirt_network" "vm_public_network" {
     mode = "${var.VM_NETMODE}"
     domain = "${var.VM_HOSTNAME}.local"
 
-    addresses = ["192.168.100.0/24"]
+    addresses = ["10.10.10.0/24"]
     
     dns {
         enabled = var.VM_DNS

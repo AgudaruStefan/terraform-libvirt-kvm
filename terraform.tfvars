@@ -3,12 +3,12 @@ vm_main_configs={
         count   = 1
         index   = 0
         name    = "masterNode"
-        cpu     = 1
-        ram     = 1024
-       source   = "https://cloud-images.ubuntu.com/releases/bionic/release/ubuntu-18.04-server-cloudimg-amd64.img"
-        user     = "masternodeuser"
+        cpu     = 2
+        ram     = 2048
+       source   = "/home/beardedsam/Projects/PoC/terraform-libvirt-kvm/jammy-server-cloudimg-amd64-disk-kvm.img"
+        user     = "ansible"
         format   = "qcow2"
-        ip       = "192.168.100.20"
+        ip       = "10.10.10.20"
         is_master = true
     }
     workerNode1 = {
@@ -17,10 +17,10 @@ vm_main_configs={
         name    = "workerNode1"
         cpu     = 1
         ram     = 2048
-       source   = "https://cloud-images.ubuntu.com/releases/bionic/release/ubuntu-18.04-server-cloudimg-amd64.img"
-        user     = "workernodeuser1"
+       source   = "/home/beardedsam/Projects/PoC/terraform-libvirt-kvm/jammy-server-cloudimg-amd64-disk-kvm.img"
+        user     = "ansible"
         format   = "qcow2"
-        ip       = "192.168.100.30"
+        ip       = "10.10.10.30"
         is_master = false
     }
     workerNode2 = {
@@ -29,10 +29,10 @@ vm_main_configs={
         name    = "workerNode2"
         cpu     = 1
         ram     = 2048
-       source   = "https://cloud-images.ubuntu.com/releases/bionic/release/ubuntu-18.04-server-cloudimg-amd64.img"
-        user     = "workernodeuser2"
+       source   = "/home/beardedsam/Projects/PoC/terraform-libvirt-kvm/jammy-server-cloudimg-amd64-disk-kvm.img"
+        user     = "ansible"
         format   = "qcow2"
-        ip       = "192.168.100.40"
+        ip       = "10.10.10.40"
         is_master = false
     }
 }

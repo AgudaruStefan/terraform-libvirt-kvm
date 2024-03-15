@@ -5,7 +5,6 @@ variable "vm_disk_configs" {
     user     = string
     format   = string
     ip       = string
-
   }))
   default = {
     masterNode = {
