@@ -1,0 +1,5 @@
+- import_playbook: add_name_resolution.yaml
+- import_playbook: add_ipv4_bridge.yaml
+- import_playbook: add_kube_dependencies.yaml
+- import_playbook: add_kube_masterinit.yaml
+- import_playbook: add_kube_workers.yaml

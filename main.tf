@@ -49,17 +49,24 @@ module "vms_module" {
 }
 
 locals {
-  master_hosts = [for key, value in var.vm_main_configs : value.ip if value.is_master]
-  worker_hosts = [for key, value in var.vm_main_configs : value.ip if !value.is_master]
+  master_hosts = [for key, value in var.vm_main_configs : {
+    name = value.name
+    ip = value.ip
+  } if value.is_master]
+  
+  worker_hosts = [for key, value in var.vm_main_configs : {
+    name = value.name
+    ip = value.ip
+  } if !value.is_master]
 }
 
 resource "local_file" "ansible_hosts_file" {
   filename = "${path.module}/ansible_hosts.ini"
   content = <<-EOT
 [masters]
-${join("\n", local.master_hosts)}
+${join("\n", [for host in local.master_hosts : "${host.name} ansible_host=${host.ip}"])}
 
 [workers]
-${join("\n", local.worker_hosts)}
+${join("\n", [for host in local.worker_hosts : "${host.name} ansible_host=${host.ip}"])}
 EOT
 }
